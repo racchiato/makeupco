@@ -1,4 +1,3 @@
-import Navbar from '../components/Navbar';
 import Layout from '../components/Layout';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -7,6 +6,7 @@ import ProductThumbnail from '../components/ProductThumbnail';
 import { Button } from 'react-bootstrap';
 import product_types from '../mock_data/categories';
 import brands from '../mock_data/brands';
+import Skeleton from 'react-loading-skeleton';
 
 export const getServerSideProps = async ({ query }) => {
     let params = {}
@@ -17,8 +17,8 @@ export const getServerSideProps = async ({ query }) => {
     if (brand) {
       params.brand = brand
     }
-    const res = await axios.get('http://localhost:3000/api/products', { params })
-    const products = res.data.result || []
+    const res = await axios.get('https://makeup-api.herokuapp.com/api/v1/products.json', { params })
+    const products = res.data || []
     return {
       props: {
         products,
@@ -36,22 +36,35 @@ const Products = ({products, product_type, brand}) => {
       keyword: '',
       product_type: product_type,
       brand: brand,
-      price_greater_than: 0,
-      price_less_than: 100000,
-      rating_greater_than: 1,
-      rating_less_than: 5
+      price_greater_than: '',
+      price_less_than: '',
+      rating_greater_than: '',
+      rating_less_than: ''
   })
 
   const getProducts = async () => {
     console.log(params)
-    await axios.get('http://localhost:3000/api/products', {
+    const { keyword, ...others } = params;
+
+    await axios.get('https://makeup-api.herokuapp.com/api/v1/products.json', {
         params: {
-          ...params,
-          rating_greater_than: params.rating_greater_than - 1,
-          rating_less_than: params.rating_less_than + 1
+          ...others,
+          rating_greater_than: params.rating_greater_than,
+          rating_less_than: params.rating_less_than
+        },
+        paramsSerializer: (params) => {
+          let result = '';
+          Object.keys(params).forEach(key => {
+              result += `${key}=${encodeURIComponent(params[key])}&`;
+          });
+          return result.substr(0, result.length - 1)
         }
       }).then(res => {
-        setProducts(res.data.result)
+        let result = res.data
+        if (keyword) {
+          result = result.filter(p => p.name.includes(keyword))
+        }
+        setProducts(result)
         setLoading(false)
       })
   }
@@ -67,7 +80,7 @@ const Products = ({products, product_type, brand}) => {
   }, [currentProducts, loading])
 
   return (
-    <Layout title={product_type ? 'Eyeliner - Products' : 'Search Products'}>
+    <Layout title={product_type ? `${product_types.find(t => t.ref === product_type).name} - Products` : 'Search Products'}>
       <Container className="py-5">
           <Row className="my-3">
               <Col md={3} className="mb-5">
@@ -100,18 +113,18 @@ const Products = ({products, product_type, brand}) => {
                             </div>
                             <div className="mb-4">
                                 <h5 className="mb-2">Price</h5>
-                                <p className="mb-1">From</p>
-                                <Form.Control className="mb-3" onInput={e => setParams({...params, price_greater_than: e.target.value})} type="number" value={params.price_greater_than} min="0"/>
-                                <p className="mb-1">To</p>
-                                <Form.Control type="number" onInput={e => setParams({...params, price_less_than: e.target.value})} value={params.price_less_than} min="10" max="100000" />
+                                <p className="mb-1">Greater Than</p>
+                                <Form.Control className="mb-3" onInput={e => setParams({...params, price_greater_than: e.target.value})} type="number" value={params.price_greater_than || 0} min="0"/>
+                                <p className="mb-1">Less Than</p>
+                                <Form.Control type="number" onInput={e => setParams({...params, price_less_than: e.target.value})} value={params.price_less_than || 1000000} min="10" max="100000" />
                             </div>
 
                             <div className="mb-4">
                                 <h5 className="mb-2">Rating</h5>
-                                <p className="mb-1">From</p>
-                                <Form.Control className="mb-3" onInput={e => setParams({...params, rating_greater_than: e.target.value})} type="number" value={params.rating_greater_than} min="1" max="4"/>
-                                <p className="mb-1">To</p>
-                                <Form.Control type="number" onInput={e => setParams({...params, rating_less_than: e.target.value})} value={params.rating_less_than} min="2" max="5" />
+                                <p className="mb-1">Greater Than</p>
+                                <Form.Control className="mb-3" onInput={e => setParams({...params, rating_greater_than: e.target.value})} type="number" value={params.rating_greater_than || 0} min="0" max="4"/>
+                                <p className="mb-1">Less Than</p>
+                                <Form.Control type="number" onInput={e => setParams({...params, rating_less_than: e.target.value})} value={params.rating_less_than || 6} min="1" max="5" />
                                 <Button className="w-100 mt-2" onClick={applyFilter}>Apply Filter</Button>
                             </div>
                         </Accordion.Body>
@@ -120,8 +133,8 @@ const Products = ({products, product_type, brand}) => {
                 </div>
               </Col>
               <Col>
-                <Row>
-                    {currentProducts.map((p, i) => <ProductThumbnail product={p} key={i} />)}
+               <Row>
+                  {loading ? <Skeleton width={"100%"} /> : currentProducts.map((p, i) => <ProductThumbnail product={p} key={i} />)}
                 </Row>
               </Col>
           </Row>

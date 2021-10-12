@@ -5,9 +5,11 @@ import product_types from '../mock_data/categories';
 const Navbar = () => (
     <Container fluid className="nav-wrapper py-3 sticky-top">
         <Row>
-            <Col className="header-title">
-                <h1 className="text-center">MAKEUP & CO.</h1>
-            </Col>
+            <Link href="/" passHref>
+                <Col className="header-title" style={{cursor: 'pointer'}}>
+                    <h1 className="text-center">MAKEUP & CO.</h1>
+                </Col>
+            </Link>
         </Row>
         <Nav className="justify-content-center px-lg-5">
             <Nav.Item>
