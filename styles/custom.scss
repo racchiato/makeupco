@@ -1,0 +1,127 @@
+$primary: rgb(153, 72, 99);
+$secondary: rgb(253, 243, 246);
+$theme-colors: (
+    "primary":    $primary,
+    "secondary":  $secondary,
+) !default;
+@import "~bootstrap/scss/bootstrap";
+
+
+body {
+    font-family: 'Patrick Hand', cursive;
+}
+.nav-wrapper {
+    background-color: rgb(153, 72, 99);
+}
+
+.img-fluid {
+    object-fit: contain;
+    min-width: 80%;
+    max-height: 400px;
+}
+
+.nav-link {
+    transition: 0.4s ease;
+    color: $secondary;
+    border-radius: 5px;
+    &:hover {
+        font-weight: bold;
+        color: $secondary;
+    }
+}
+
+.header-title h1 {
+    color: white;
+    letter-spacing: 4px;
+}
+
+.featured-products {
+    h1 {
+        letter-spacing: 3px;
+    }
+    background-color: rgb(253, 243, 246);
+    color: rgb(119, 56, 77);
+}
+
+.banner-text {
+    color: rgb(119, 56, 77);
+    letter-spacing: 2px;
+}
+
+.category-box {
+    cursor: pointer;
+    transition: 0.3s ease;
+    a {
+        color: rgb(119, 56, 77);
+        text-decoration: none;
+    }
+    &:hover {
+        transform: scale(1.1);
+        background-color: rgb(119, 56, 77);
+        color: white;
+        a {
+            color: white;
+            text-decoration: none;
+        }
+    }
+}
+
+.brand-box {
+    cursor: pointer;
+    transition: 0.3s ease;
+    a {
+        color: $secondary;
+        text-decoration: none;
+    }
+    &:hover {
+        transform: scale(1.1);
+        background-color: $secondary;
+        a {
+            color: $primary;
+            text-decoration: none;
+        }
+    }
+}
+
+.product-thumbnail {
+    cursor: pointer;
+    transition: 0.5s ease;
+    &:hover {
+        transform: scale(1.1);
+        box-shadow: 0px 0px 20px black ;
+    }
+}
+
+.product-title {
+    letter-spacing: 2px;
+}
+
+.product-description {
+    letter-spacing: 1px;
+}
+
+.product-img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+}
+
+.swatch .swatch-color {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    margin-right: 3px;
+}
+
+.nav-link {
+    &:focus {
+        color: $secondary;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .sticky-sidebar {
+      position: sticky;
+      top: 150px;
+    }
+}
