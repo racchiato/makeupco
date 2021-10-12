@@ -112,11 +112,11 @@ const Products = ({products, product_type, brand}) => {
                                 <Form.Control className="mb-3" onInput={e => setParams({...params, rating_greater_than: e.target.value})} type="number" value={params.rating_greater_than} min="1" max="4"/>
                                 <p className="mb-1">To</p>
                                 <Form.Control type="number" onInput={e => setParams({...params, rating_less_than: e.target.value})} value={params.rating_less_than} min="2" max="5" />
+                                <Button className="w-100 mt-2" onClick={applyFilter}>Apply Filter</Button>
                             </div>
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>
-                <Button onClick={applyFilter}>Apply Filter</Button>
                 </div>
               </Col>
               <Col>
