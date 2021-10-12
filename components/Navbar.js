@@ -23,7 +23,7 @@ const Navbar = () => (
             <Nav.Item>
                 <NavDropdown title="Categories" id="categories-dropdown">
                     {product_types.map(type => (
-                        <Link href={`products?product_type=${type.ref}`} passHref>
+                        <Link key={type.ref} href={`products?product_type=${type.ref}`} passHref>
                             <NavDropdown.Item>
                                 {type.name}
                             </NavDropdown.Item>

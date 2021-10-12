@@ -12,8 +12,8 @@ const BrandsBanner = () => (
         </Row>
         <Row>
             {brands.map(brand => (
-                <Link  href={`products?brand=${brand}`} passHref>
-                    <Col className="brand-box py-5" key={brand} md={3} xs={6}>
+                <Link key={brand} href={`products?brand=${brand}`} passHref>
+                    <Col className="brand-box py-5" md={3} xs={6}>
                         <div className="my-auto text-center">
                             <a className="fw-bold" href={`products?brand=${brand}`}>
                                 <h4>{brand}</h4>
