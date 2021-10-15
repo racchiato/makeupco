@@ -4,9 +4,9 @@ import { useRouter } from 'next/router'
 import { Row, Container, Col} from 'react-bootstrap';
 import Skeleton from 'react-loading-skeleton';
 
-import Layout from '../../components/Layout';
-import ColorShades from '../../components/ColorShades';
-import ProductInformation from '../../components/ProductInformation';
+import Layout from '../../../components/Layout';
+import ColorShades from '../../../components/ColorShades';
+import ProductInformation from '../../../components/ProductInformation';
 
 // export const getStaticPaths = async () => {
 //     const res = await axios.get('http://makeup-api.herokuapp.com/api/v1/products.json')
@@ -19,8 +19,12 @@ import ProductInformation from '../../components/ProductInformation';
 // }
 
 export const getServerSideProps = async ({ params }) => {
-    const res = await axios.get('http://makeup-api.herokuapp.com/api/v1/products.json')
-    const { id } = params
+    const { type, id } = params
+    const res = await axios.get('http://makeup-api.herokuapp.com/api/v1/products.json', {
+      params: {
+        product_type: type
+      }
+    })
     const product = res.data || []
     return {
       props: {
