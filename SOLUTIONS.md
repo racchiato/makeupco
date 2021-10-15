@@ -47,3 +47,9 @@ When I'm done, I was going to deploy it to Vercel. I encountered some problems w
 ### Remarks
 
 I'm actually very grateful for the challenge given, I learned a lot by my mistakes in this challenge.
+
+### Library Used
+
+- `axios` for making HTTP request, easier to include `params` in GET request
+- `react-bootstrap` for UI layout, mainly utilized it for grid system
+- `react-loading-skeleton` for loading view when CSR is fetching
